@@ -1,5 +1,6 @@
 // IMPORTS
-const express = require('express');
+const express = require('express'),
+authRoutes = require('./routes/auth');
 
 const app = express();  
 
@@ -22,9 +23,8 @@ app.get('/', (req, res) => {
 });
 
 // Enregistrement du 'router' pour toutes les demandes effectuées
-app.use('/api', (req, res) => {
-    res.send('Api');
-});
+app.use('/api/auth', authRoutes);
+
 
 // EXPORTS
 module.exports = app;
