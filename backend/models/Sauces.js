@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 
+// SCHEMA DE DONNEES
 const sauceSchema = mongoose.Schema({
     userId: { type: String, require: true },
     name: { type: String, require: true },
@@ -16,4 +17,5 @@ const sauceSchema = mongoose.Schema({
     usersDisliked: { type: [String] }
 });
 
+// EXPORTS
 module.exports = mongoose.model('Sauce', sauceSchema);
