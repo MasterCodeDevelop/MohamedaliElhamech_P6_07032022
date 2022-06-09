@@ -1,10 +1,5 @@
-const http = require('http');
-const express = require('express');
-const app = express();  
-
-app.get('/', (req, res) => {
-    res.send('Master Code Develop');
-});
+const http = require('http'),
+app = require('./app');
 
 // Renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaîne
 const normalizePort = val => {
