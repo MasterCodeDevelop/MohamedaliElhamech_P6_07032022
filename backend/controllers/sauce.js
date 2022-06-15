@@ -6,9 +6,7 @@ fs = require("fs");
 exports.createSauce = (req, res, next) => {
   // Transforme la chaîne de caractère en objet
   const sauceObject = JSON.parse(req.body.sauce);
-
-  // Affichage du résultat dans la console
-  console.log(sauceObject);
+  delete sauceObject._id;
 
   // Création d'un nouvelle sauce
   const sauce = new Sauce({
@@ -57,7 +55,6 @@ exports.modifySauce = (req, res, next) => {
             }`,
           };
 
- 
         /**
          * Mise à jour de la base de données
          * Argument 1 : Objet de comparaison '_id' doit être le même que le paramètre de requête
@@ -76,7 +73,6 @@ exports.modifySauce = (req, res, next) => {
   // S'il n'y a la présence ou non de 'request.file'.
   } else {
     // nouvelle donées de la sauce
-    const sauceObject = { ...req.body };
 
     /**
      * Mise à jour de la base de données
@@ -85,7 +81,7 @@ exports.modifySauce = (req, res, next) => {
      */
     Sauce.updateOne(
       { _id: req.params.id },
-      { ...sauceObject, _id: req.params.id }
+      { ...JSON.parse(req.body.sauce), _id: req.params.id }
     )
       .then(() => res.status(200).json({ message: "Sauce modifiée!" }))
       .catch((error) => res.status(400).json({ error }));
@@ -98,8 +94,9 @@ exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     // Récupération de la sauce dans la base de données
     .then((sauce) => {
+
       // Vérification que la sauce appartient à la personne qui effectue la requête
-      if (sauce.userId !== request.auth.userId) {
+      if (sauce.userId !== req.auth.userId) {
         return response.status(401).json({
           error: new Error("Requête non autorisée !"),
         });
@@ -108,7 +105,7 @@ exports.deleteSauce = (req, res, next) => {
       // Récupération du nom du fichier à supprimer
       const filename = sauce.imageUrl.split("/images/")[1];
 
-      // Suppression de ce fichier avec la methode 'unlink' du package 'fs'
+      //Suppression de ce fichier avec la methode 'unlink' du package 'fs'
       fs.unlink(`images/${filename}`, () => {
         // Suppression de la sauce dans la base de données avec le même  '_id' que le paramètre de requête 
         Sauce.deleteOne({ _id: req.params.id })

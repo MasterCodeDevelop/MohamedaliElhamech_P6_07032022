@@ -7,6 +7,7 @@ authRoutes = require('./routes/auth'),
 app = express();
 
 require('dotenv').config();
+//console.log(process.env.NODE_ENV);
 require('./db/mongoose')
 
 
