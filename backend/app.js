@@ -6,8 +6,10 @@ sauceRoutes = require('./routes/sauce'),
 authRoutes = require('./routes/auth'),
 app = express();
 
+//récupérationdes des variables d'environement dans le fichier .env
 require('dotenv').config();
-//console.log(process.env.NODE_ENV);
+
+// connexion à la base de donée
 require('./db/mongoose')
 
 
