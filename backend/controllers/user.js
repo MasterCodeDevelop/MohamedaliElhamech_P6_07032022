@@ -6,7 +6,16 @@ User = require('../models/User');
 
 // Création de nouveau compte d'utilisateur 
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
+    const password = req.body.password,
+    RegPass = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+
+    //vérifier les condition du mot de passe
+    if(RegPass.test(password) == false){
+        return res.status(401).json({ message: "Le mot de passe doit comporter 8 caractères ou plus dont 1 lettre minuscule et majuscule, 1 nombre et 1 caractère spécial" });
+    }
+
+    //crypter le mot de passe
+    bcrypt.hash(password, 10)
         .then(hash => {
             // Création du nouvel utilisateur
             const user = new User({
